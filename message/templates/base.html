@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Notify-Me</title>
 </head>
 
@@ -16,27 +18,38 @@
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'home' %}">
                 <!-- <img src="{% static 'images/tutor_me.jpg' %}" width="30" height="30" alt=""> -->
-               <h3>Notify-Me</h3>
+                <h3>Notify-Me</h3>
             </a>
         </nav>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Log in</a>
+                    <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
                 </li>
             </ul>
         </div>
+        {% else %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
     </nav>
-    {% block content %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <div class="container">
+        {% block content %}
 
 
-    {% endblock content %}
+        {% endblock content %}
+    </div>
+
     <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/boostrap.min.js' %}"></script>

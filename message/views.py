@@ -3,10 +3,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from utils.send_sms import send_sms
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from .models import Contact
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     """Display the HomePage"""
 
     template_name = 'index.html'
@@ -17,7 +19,7 @@ class HomeView(TemplateView):
         return context
 
 
-class CreateContact(CreateView):
+class CreateContact(LoginRequiredMixin, CreateView):
     """Create a new Contact"""
 
     model = Contact
@@ -28,7 +30,7 @@ class CreateContact(CreateView):
         return reverse_lazy("home")
 
 
-class UpdateContact(UpdateView):
+class UpdateContact(LoginRequiredMixin, UpdateView):
     """Update an existing contact"""
 
     model = Contact
@@ -38,7 +40,7 @@ class UpdateContact(UpdateView):
     success_url = reverse_lazy("home")
 
 
-class DeleteContact(DeleteView):
+class DeleteContact(LoginRequiredMixin, DeleteView):
     """Delete an existing contact"""
 
     model = Contact
@@ -46,6 +48,8 @@ class DeleteContact(DeleteView):
     success_url = reverse_lazy("home")
     context_object_name = "contact"
 
+
+@login_required
 def SendMessage(request):
     """Send SMS to Recipients Contacts"""
     if request.method == 'POST':
