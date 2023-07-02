@@ -8,3 +8,4 @@ def send_sms(message):
     print("Sending message...")
     # TODO: Add Twillio SMS Gateway
     print("\nMessage sent Successful!")
+    return "Sent"
