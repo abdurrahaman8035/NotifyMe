@@ -1,35 +1,37 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Contact
-from django.urls import reverse, reverse_lazy
 
 
-def homeView(request):
+class HomeView(TemplateView):
+    """Display the HomePage"""
+
     contacts = Contact.objects.all()
-    return render(request, 'index.html', {'contacts': contacts})
+    extra_context = {"contacts": contacts}
 
 
-class createContact(CreateView):
+class CreateContact(CreateView):
+    """Create a new Contact"""
+
     model = Contact
-    fields = ['name', 'phone_number', 'id_number']
-    template_name = 'create_contact.html'
+    fields = ["name", "phone_number", "id_number"]
+    template_name = "create_contact.html"
 
 
-class updateContact(UpdateView):
+class UpdateContact(UpdateView):
+    """Update an existing contact"""
+
     model = Contact
-    fields = '__all__'
-    template_name = 'update_contact.html'
-    context_object_name = 'contact'
+    fields = "__all__"
+    template_name = "update_contact.html"
+    context_object_name = "contact"
 
 
-class deleteContact(DeleteView):
+class DeleteContact(DeleteView):
+    """Delete an existing contact"""
+
     model = Contact
-    template_name = 'delete_contact.html'
-    success_url = reverse_lazy('home')
-    context_object_name = 'contact'
-
-
-class templateView(TemplateView):
-    template_name = 'about_me.html'
+    template_name = "delete_contact.html"
+    success_url = reverse_lazy("home")
+    context_object_name = "contact"
